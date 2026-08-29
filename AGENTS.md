@@ -17,6 +17,7 @@ This file defines repository workflow for people and coding agents. Product inte
 - Model concrete guitar and part models as independently addressable records when they can be reused. A `GuitarModel` composes `BodyModel`, `NeckModel`, and `BridgeModel` relationships rather than duplicating their detail.
 - Use separate named schemas and types for `GuitarModel`, `BodyModel`, `NeckModel`, `BridgeModel`, and future component models. Do not use one generic model schema with a `kind` field.
 - Separate a model's stable identity from its descriptive attributes. Model names are unique only within their catalog and model type; descriptions never determine identity or uniqueness.
+- Treat a `BodyArchetype` as a system-curated reference entity, not a catalog model or fixed enum. A `BodyModel` may reference it optionally; do not invent a closed archetype list or reconciliation workflow before they are required.
 - Do not invent exhaustive guitar terminology, constraints, units, or enum values without agreement. Capture an open question in `docs/` or the relevant issue/PR context instead.
 - Prefer additive, backwards-compatible schema changes while the API evolves. Pair persistent schema changes with a migration.
 

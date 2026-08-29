@@ -24,6 +24,8 @@ The shared foundation distinguishes four layers. A **catalog** is a namespace fo
 
 The first composition is a `GuitarModel` that references a `BodyModel`, `NeckModel`, and `BridgeModel`. These are separate model types and separate external schemas, not variants of a generic `Model` object. A model name is unique within its catalog and model type, while a stable identifier preserves references across renames and revisions.
 
+A `BodyModel` may optionally reference a platform-curated `BodyArchetype`, such as a shared ST-style form. An archetype is a system reference entity with its own stable identity, rather than a catalog model or a closed enum. This lets real and custom body models share a common form without claiming they are the same manufacturer product.
+
 ### Product principles
 
 - Model the instrument and its parts faithfully enough to serve players, collectors, shops, and builders.

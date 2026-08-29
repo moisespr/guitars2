@@ -26,6 +26,12 @@ Future InventoryItem ──references──> GuitarModel
 
 A `Catalog` is a namespace for named models. It can represent a global manufacturer catalog, a private shop or builder catalog, or a personal idea catalog. Catalog visibility, hierarchy, ownership, and permissions are deferred.
 
+### System reference entities
+
+A `BodyArchetype` is a platform-curated reference entity for a durable shared body form, such as an ST-style body. It is neither a catalog model nor a closed enum: it has its own stable ID and may later have names, aliases, definitions, or provenance. A `BodyModel` may reference a `BodyArchetype` optionally. This allows a real manufacturer body and a custom body to share a form without claiming they are the same product.
+
+Archetype reconciliation, duplicate detection, canonicalization, and model merging are deferred. A client-created `BodyModel` remains its own model even when a relevant archetype or catalogued model is later known.
+
 ### Models and specifications
 
 A model is the primary named business entity. Its specification is the structured technical content of that model. The external API expresses that content with JSON Schema; the future domain and persistence representations must preserve its meaning without determining its public shape.
@@ -59,6 +65,8 @@ An `InventoryItem` is a future physical instance. Serial number, condition, pric
 | Any model | stable `id`, `catalogId`, name | Model identity, catalog relationship, and descriptive attribute constrained within its namespace |
 | `GuitarModel` | `bodyModelId`, `neckModelId`, `bridgeModelId` | Composition relationships to part models |
 | `BodyModel`, `NeckModel`, `BridgeModel` | stable `id`, `catalogId`, name | Part-model identity, catalog relationship, and descriptive attribute |
+| `BodyModel` | optional `bodyArchetypeId` | Relationship to a system reference entity |
+| `BodyArchetype` | stable `id` | System reference-entity identity |
 | `Measurement` | `value`, `unit` | Immutable value object |
 
 ## Deferred decisions
@@ -68,6 +76,8 @@ An `InventoryItem` is a future physical instance. Serial number, condition, pric
 - **Detailed part attributes:** decide concrete body, neck, and bridge fields from real API use cases; do not import a fixed terminology list from the research source.
 - **Compatibility validation:** defer automatic neck-to-body and bridge-to-body compatibility rules until manufacturer data and semantics are agreed.
 - **Other component models:** pickups, electronics, tuners, strings, and hardware are future named model types with separate schemas.
+- **Archetype governance:** decide the first archetypes, curation process, aliases, revision semantics, and API surface for system reference entities without treating them as a fixed enum.
+- **Reconciliation:** defer claims that a private model is the same as, derived from, or classified by a known model beyond the optional `BodyArchetype` reference.
 - **Catalog governance:** catalog hierarchy, curation, ownership, visibility, sharing, and authorization are future concerns.
 - **Inventory and parties:** physical instances, serial numbers, prices, owners, and the party/actor model are future concerns.
 
