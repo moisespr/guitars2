@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible deviation from expected behavior.
+title: "[Bug]: "
+labels:
+  - type:bug
+body:
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: What happened? Include an error response or relevant evidence, without secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should an API consumer, user, or operator observe instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and evidence
+      description: Include versions, relevant configuration (with secrets removed), logs, and test results.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Regression validation
+      description: State the test or other deterministic evidence that will prevent recurrence.
+    validations:
+      required: true

@@ -71,6 +71,16 @@ This file defines repository workflow for people and coding agents. Product inte
 - Run the most relevant formatter, typecheck, tests, and build commands that the repository provides. Report what was run and any limitation.
 - Update the README only for product-facing setup, architecture, scope, or usage changes. Update this file when working conventions change.
 
+## Issue tracking and agent-readiness
+
+- Use GitHub Issues as the durable project work queue. Create small, outcome-oriented issues that can be completed and verified independently.
+- State the context, observable behavior or outcome, acceptance criteria, constraints, and required validation evidence in every implementation issue.
+- Classify issues with one `type:` label (`feature`, `bug`, `chore`, or `decision`) and applicable `area:` labels (`domain`, `api`, `database`, or `platform`).
+- Apply `agent-ready` only when the scope is bounded, relevant product decisions are resolved, acceptance criteria are explicit, and deterministic verification commands are known.
+- Link commits and pull requests to their issue. Keep issue discussions as the record of material scope or decision changes.
+- Agents may detect, summarize, and propose work autonomously. They must not create external changes, open pull requests, or modify issue state without explicit authorization until automated validation, security checks, and repository policies provide sufficient guardrails.
+- Prefer improving the deterministic feedback loop—tests, linting, type checks, security scanning, and policy checks—before expanding autonomous agent authority.
+
 ## Documentation decisions
 
 - README: what GuitarS2 is, its scope, architecture direction, and how to use it.

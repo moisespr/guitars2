@@ -1,0 +1,50 @@
+name: Feature or improvement
+description: Propose a bounded user- or system-facing outcome.
+title: "[Feature]: "
+labels:
+  - type:feature
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this outcome valuable? Include the affected domain or workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observable behavior
+      description: Describe what a user, API consumer, or operator can observe when this is complete.
+      placeholder: Given ... when ... then ...
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: List verifiable outcomes.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and open decisions
+      description: Record technical constraints or unresolved product/domain decisions. Do not infer them silently.
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation evidence
+      description: State the tests, commands, or checks that demonstrate completion.
+    validations:
+      required: true
+  - type: checkboxes
+    id: agent-ready
+    attributes:
+      label: Agent readiness
+      options:
+        - label: Scope is bounded and relevant product decisions are resolved.
+        - label: Acceptance criteria and deterministic validation are explicit.
