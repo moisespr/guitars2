@@ -86,6 +86,13 @@ This file defines repository workflow for people and coding agents. Product inte
 - Agents may detect, summarize, and propose work autonomously. They must not create external changes, open pull requests, or modify issue state without explicit authorization until automated validation, security checks, and repository policies provide sufficient guardrails.
 - Prefer improving the deterministic feedback loop—tests, linting, type checks, security scanning, and policy checks—before expanding autonomous agent authority.
 
+### Issue-driven commands
+
+- `issues` and `list issues` list open repository issues with their number, title, labels, and a compact status summary. `list closed issues` and `list all issues` explicitly broaden that default view.
+- `show <number>`, `show #<number>`, `show GH-<number>`, and `show issue <number>` are read-only commands that display an issue's actionable context: description, labels, state, comments, linked work, and relevant dependencies.
+- `work on <number>`, `work on #<number>`, and `work on GH-<number>` start work on that GitHub Issue. First read its full context and treat it as the authoritative scope; flag unresolved decisions, dependencies, or unbounded acceptance criteria before implementation.
+- Working on an issue does not implicitly commit, push, close the issue, change labels/state, or open a pull request. Use `cp` for a task-scoped commit and push; require an explicit instruction for other external issue or pull-request changes.
+
 ## Documentation decisions
 
 - README: what GuitarS2 is, its scope, architecture direction, and how to use it.
