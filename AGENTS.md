@@ -96,7 +96,9 @@ This file defines repository workflow for people and coding agents. Product inte
 
 - `issues` and `list issues` list open repository issues with their number, title, labels, and a compact status summary. `list closed issues` and `list all issues` explicitly broaden that default view.
 - `show <number>`, `show #<number>`, `show GH-<number>`, and `show issue <number>` are read-only commands that display an issue's actionable context: description, labels, state, comments, linked work, and relevant dependencies.
+- `assess <number>`, `assess #<number>`, and `assess GH-<number>` evaluate every issue acceptance criterion against the current repository state and required validation evidence. Publish the assessment as an issue comment, synchronize each verified acceptance-criteria checkbox in the issue description, and identify unmet criteria, limitations, and any required human approval.
 - `work on <number>`, `work on #<number>`, and `work on GH-<number>` start work on that GitHub Issue. First read its full context and treat it as the authoritative scope; flag unresolved decisions, dependencies, or unbounded acceptance criteria before implementation.
+- `close <number>`, `close #<number>`, and `close GH-<number>` explicitly close the issue. Before closing, verify there is a current successful assessment and, where applicable, a passing required CI pipeline; otherwise report the unmet condition. The command is the required human acceptance while issue closure remains manual.
 - Working on an issue does not implicitly commit, push, close the issue, change labels/state, or open a pull request. Use `cp` for a task-scoped commit and push; require an explicit instruction for other external issue or pull-request changes.
 
 ## Documentation decisions
