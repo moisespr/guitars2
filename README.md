@@ -10,7 +10,7 @@ The first milestone is deliberately small: build an API that persists and retrie
 
 This iteration will establish:
 
-- a TypeScript API service;
+- a production-oriented TypeScript API service;
 - a PostgreSQL-backed persistence layer;
 - an initial, collaboratively defined domain model for guitar parts and full guitar specs;
 - operations to create and retrieve specs;
@@ -20,10 +20,25 @@ The exact guitar model is not fixed yet. For example, a neck model should be abl
 
 ## Technology
 
-- TypeScript
+- Node.js and TypeScript
+- Fastify for the HTTP API
+- TypeBox and JSON Schema for request/response contracts and runtime validation
+- OpenAPI generated from the API contracts
 - PostgreSQL
+- Kysely and `pg` for PostgreSQL access, isolated in persistence adapters
+- SQL migrations checked into the repository
+- Vitest for behavior-driven unit, API-contract, and integration tests
+- OpenTelemetry-compatible observability as the API gains operational concerns
 - React (planned client application)
 - Terraform (infrastructure definitions; deployment planning comes later)
+
+## API architecture direction
+
+The API will use Ports & Adapters architecture. The domain model and application use cases remain independent of Fastify, PostgreSQL, Kysely, and operational integrations. HTTP and PostgreSQL are adapters composed at application startup.
+
+The initial API will use REST and JSON contracts. Request input is validated at the HTTP boundary, domain invariants are enforced by the domain model, and response and error shapes are explicit API contracts. JSON Schema will provide the foundation for validation and OpenAPI documentation.
+
+PostgreSQL queries and row-to-domain mapping belong in persistence adapters. Database migrations are explicit, reviewed SQL files, so schema changes remain visible and independently deployable. Tests describe observable behavior and cover the domain and application core without infrastructure, then verify HTTP and PostgreSQL adapters through their public contracts.
 
 ## Monorepo direction
 
@@ -64,4 +79,3 @@ These directories are a target structure, not a requirement to create empty scaf
 ## Status
 
 Project inception. The initial domain model and API contract are the next decisions to make.
-
