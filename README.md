@@ -16,7 +16,13 @@ Potential products built on this foundation include:
 - a wishlist and market-viewing experience for existing guitars, including local or global price information when reliable sources are available;
 - operational software for shops and builders to manage inventory, build ideas, specifications, and orders.
 
-This is a product possibility, not a committed business plan or current roadmap. The first API milestone validates the shared specification foundation only. Marketplace operations, pricing data, commerce, ordering workflows, identity, and integrations are later decisions and must not distort the early domain model.
+This is a product possibility, not a committed business plan or current roadmap. The first API milestone validates the shared model foundation only. Marketplace operations, pricing data, commerce, ordering workflows, identity, and integrations are later decisions and must not distort the early domain model.
+
+### Foundation model
+
+The shared foundation distinguishes four layers. A **catalog** is a namespace for named entries, such as a public manufacturer catalog, a shop's private catalog, or a player's idea catalog. A **model** is a named guitar or part entry in that catalog. Its **specification** is the structured technical content, expressed externally through JSON Schema. A future **inventory item** is a physical owned instance—serial number, condition, price, and owner—that may reference a model but is not a catalog entry.
+
+The first composition is a `GuitarModel` that references a `BodyModel`, `NeckModel`, and `BridgeModel`. These are separate model types and separate external schemas, not variants of a generic `Model` object. A model name is unique within its catalog and model type, while a stable identifier preserves references across renames and revisions.
 
 ### Product principles
 
@@ -58,7 +64,7 @@ The exact guitar model is not fixed yet. For example, a neck model should be abl
 
 The API will use Ports & Adapters architecture. The domain model and application use cases remain independent of Fastify, PostgreSQL, Kysely, and operational integrations. HTTP and PostgreSQL are adapters composed at application startup.
 
-The initial API will use REST and JSON contracts. Request input is validated at the HTTP boundary, domain invariants are enforced by the domain model, and response and error shapes are explicit API contracts. JSON Schema will provide the foundation for validation and OpenAPI documentation.
+The initial API will use REST and JSON contracts. JSON Schema is the source of truth for every external request, response, and error model; TypeScript types are derived from those schemas, and OpenAPI will reference the same definitions. Request input is validated at the HTTP boundary, domain invariants are enforced by the domain model, and response and error shapes are explicit API contracts.
 
 PostgreSQL queries and row-to-domain mapping belong in persistence adapters. Database migrations are explicit, reviewed SQL files, so schema changes remain visible and independently deployable. Tests describe observable behavior and cover the domain and application core without infrastructure, then verify HTTP and PostgreSQL adapters through their public contracts.
 

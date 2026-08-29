@@ -12,9 +12,11 @@ This file defines repository workflow for people and coding agents. Product inte
 
 ## Domain-model workflow
 
-- The guitar data model is intentionally unfinished. Before adding or changing fields, identify whether the field describes a guitar, a part, a measurement, or a relationship between parts.
-- Model concrete part specifications as independently addressable records when they can be reused across guitars. A full guitar spec should compose part specifications rather than duplicate their detail.
-- Separate a part's identity from its descriptive attributes. Use stable IDs and retain provenance or manufacturer/model information when the model supports it.
+- The guitar data model is intentionally unfinished. Before adding or changing fields, identify whether the field describes a catalog, a model, a part, a measurement, or a relationship between models.
+- Treat a catalog as a namespace for named models. A model is the primary business entity; its specification is the structured technical content of that model.
+- Model concrete guitar and part models as independently addressable records when they can be reused. A `GuitarModel` composes `BodyModel`, `NeckModel`, and `BridgeModel` relationships rather than duplicating their detail.
+- Use separate named schemas and types for `GuitarModel`, `BodyModel`, `NeckModel`, `BridgeModel`, and future component models. Do not use one generic model schema with a `kind` field.
+- Separate a model's stable identity from its descriptive attributes. Model names are unique only within their catalog and model type; descriptions never determine identity or uniqueness.
 - Do not invent exhaustive guitar terminology, constraints, units, or enum values without agreement. Capture an open question in `docs/` or the relevant issue/PR context instead.
 - Prefer additive, backwards-compatible schema changes while the API evolves. Pair persistent schema changes with a migration.
 
@@ -57,7 +59,7 @@ This file defines repository workflow for people and coding agents. Product inte
 
 ## API and data practices
 
-- Define request/response contracts explicitly and validate untrusted input at API boundaries.
+- Define request/response contracts explicitly as JSON Schema and validate untrusted input at API boundaries. JSON Schema is the source of truth for external models; TypeScript types are derived from it rather than maintained separately.
 - Keep database access behind a small, testable boundary; handlers should not contain raw persistence logic.
 - Store measurements with explicit units or a documented canonical unit. Never rely on an ambiguous bare number for physical dimensions.
 - Use UTC timestamps and clear naming for identifiers.
