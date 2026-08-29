@@ -4,6 +4,28 @@ GuitarS2 ("guitar spec spec") is a monorepo for software that models, stores, an
 
 The project treats a guitar as a composition of parts. Each part has its own specification model, and a concrete record represents either a real-world part configuration or, eventually, an imagined one. A complete guitar specification combines those parts into an accurate description of a particular guitar.
 
+## Product vision
+
+GuitarS2 aims to become a trustworthy software backbone for the guitar industry: a shared, precise model of guitars, parts, specifications, and their provenance that can support different products without each one rebuilding the underlying instrument data from scratch.
+
+Potential products built on this foundation include:
+
+- a player-facing app to catalogue owned guitars and collections;
+- a custom-guitar design experience for exploring and recording dream specifications;
+- a path for sharing a custom specification with guitar shops, builders, or luthiers as the basis for an order request;
+- a wishlist and market-viewing experience for existing guitars, including local or global price information when reliable sources are available;
+- operational software for shops and builders to manage inventory, build ideas, specifications, and orders.
+
+This is a product possibility, not a committed business plan or current roadmap. The first API milestone validates the shared specification foundation only. Marketplace operations, pricing data, commerce, ordering workflows, identity, and integrations are later decisions and must not distort the early domain model.
+
+### Product principles
+
+- Model the instrument and its parts faithfully enough to serve players, collectors, shops, and builders.
+- Preserve provenance and distinguish a manufacturer model, a concrete real-world configuration, and an imagined custom specification.
+- Make specifications portable and composable so one representation can serve multiple applications and workflows.
+- Treat externally sourced prices, availability, and shop data as time-bound, attributable information rather than permanent guitar facts.
+- Earn trust through explicit units, stable identities, clear data ownership, and evolvable contracts.
+
 ## First iteration: weekend API
 
 The first milestone is deliberately small: build an API that persists and retrieves guitar specifications.

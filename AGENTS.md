@@ -71,6 +71,11 @@ This file defines repository workflow for people and coding agents. Product inte
 - Run the most relevant formatter, typecheck, tests, and build commands that the repository provides. Report what was run and any limitation.
 - Update the README only for product-facing setup, architecture, scope, or usage changes. Update this file when working conventions change.
 
+## Instruction shortcuts
+
+- A standalone lowercase `cp` means: commit and push the verified changes made for the current task. Recognize it when it appears as its own token, delimited by whitespace, a comma, a period, or the start/end of the message.
+- Before acting on `cp`, inspect the working tree and commit only task-scoped files. Do not include unrelated user changes; report any overlap that prevents a safe scoped commit.
+
 ## Issue tracking and agent-readiness
 
 - Use GitHub Issues as the durable project work queue. Create small, outcome-oriented issues that can be completed and verified independently.
