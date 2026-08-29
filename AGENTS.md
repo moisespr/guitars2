@@ -61,6 +61,8 @@ This file defines repository workflow for people and coding agents. Product inte
 ## API and data practices
 
 - Define request/response contracts explicitly as JSON Schema and validate untrusted input at API boundaries. JSON Schema is the source of truth for external models; TypeScript types are derived from it rather than maintained separately.
+- Use JSON Schema Draft 2020-12 with a stable `$id` for every externally visible schema. Keep output resources, nested-create inputs, and ID-only references as separately named schema shapes.
+- When a contract accepts exactly one of several shapes, express that rule with `oneOf`; use `anyOf` only when multiple matching shapes are valid.
 - Keep database access behind a small, testable boundary; handlers should not contain raw persistence logic.
 - Store measurements with explicit units or a documented canonical unit. Never rely on an ambiguous bare number for physical dimensions.
 - Use UTC timestamps and clear naming for identifiers.

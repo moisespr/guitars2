@@ -66,7 +66,7 @@ The exact guitar model is not fixed yet. For example, a neck model should be abl
 
 The API will use Ports & Adapters architecture. The domain model and application use cases remain independent of Fastify, PostgreSQL, Kysely, and operational integrations. HTTP and PostgreSQL are adapters composed at application startup.
 
-The initial API will use REST and JSON contracts. JSON Schema is the source of truth for every external request, response, and error model; TypeScript types are derived from those schemas, and OpenAPI will reference the same definitions. Request input is validated at the HTTP boundary, domain invariants are enforced by the domain model, and response and error shapes are explicit API contracts.
+The initial API will use REST and JSON contracts. JSON Schema Draft 2020-12 is the source of truth for every external request, response, and error model; schemas have stable identifiers, TypeScript types are derived from them, and OpenAPI will reference the same definitions. Request input is validated at the HTTP boundary, domain invariants are enforced by the domain model, and response and error shapes are explicit API contracts.
 
 PostgreSQL queries and row-to-domain mapping belong in persistence adapters. Database migrations are explicit, reviewed SQL files, so schema changes remain visible and independently deployable. Tests describe observable behavior and cover the domain and application core without infrastructure, then verify HTTP and PostgreSQL adapters through their public contracts.
 

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:guitars2:schema:v1:guitar-model",
+  "title": "GuitarModel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "catalogId",
+    "name",
+    "body",
+    "neck",
+    "bridge",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "catalogId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "body": {
+      "$ref": "urn:guitars2:schema:v1:body-model"
+    },
+    "neck": {
+      "$ref": "urn:guitars2:schema:v1:neck-model"
+    },
+    "bridge": {
+      "$ref": "urn:guitars2:schema:v1:bridge-model"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "Create": {
+      "title": "GuitarModel create request",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "body", "neck", "bridge"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "oneOf": [
+            { "$ref": "urn:guitars2:schema:v1:body-model#/$defs/Reference" },
+            { "$ref": "urn:guitars2:schema:v1:body-model#/$defs/Create" }
+          ]
+        },
+        "neck": {
+          "oneOf": [
+            { "$ref": "urn:guitars2:schema:v1:neck-model#/$defs/Reference" },
+            { "$ref": "urn:guitars2:schema:v1:neck-model#/$defs/Create" }
+          ]
+        },
+        "bridge": {
+          "oneOf": [
+            { "$ref": "urn:guitars2:schema:v1:bridge-model#/$defs/Reference" },
+            { "$ref": "urn:guitars2:schema:v1:bridge-model#/$defs/Create" }
+          ]
+        }
+      }
+    }
+  }
+}

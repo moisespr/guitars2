@@ -59,15 +59,15 @@ An `InventoryItem` is a future physical instance. Serial number, condition, pric
 
 ## Initial field classification
 
-| Concept | Initial fields or role | Classification |
-| --- | --- | --- |
-| `Catalog` | stable `id`, name | Catalog identity and descriptive attribute |
-| Any model | stable `id`, `catalogId`, name | Model identity, catalog relationship, and descriptive attribute constrained within its namespace |
-| `GuitarModel` | `bodyModelId`, `neckModelId`, `bridgeModelId` | Composition relationships to part models |
-| `BodyModel`, `NeckModel`, `BridgeModel` | stable `id`, `catalogId`, name | Part-model identity, catalog relationship, and descriptive attribute |
-| `BodyModel` | optional `bodyArchetypeId` | Relationship to a system reference entity |
-| `BodyArchetype` | stable `id` | System reference-entity identity |
-| `Measurement` | `value`, `unit` | Immutable value object |
+| Concept                                 | Initial fields or role                        | Classification                                                                                   |
+| --------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `Catalog`                               | stable `id`, name                             | Catalog identity and descriptive attribute                                                       |
+| Any model                               | stable `id`, `catalogId`, name                | Model identity, catalog relationship, and descriptive attribute constrained within its namespace |
+| `GuitarModel`                           | `bodyModelId`, `neckModelId`, `bridgeModelId` | Composition relationships to part models                                                         |
+| `BodyModel`, `NeckModel`, `BridgeModel` | stable `id`, `catalogId`, name                | Part-model identity, catalog relationship, and descriptive attribute                             |
+| `BodyModel`                             | optional `bodyArchetypeId`                    | Relationship to a system reference entity                                                        |
+| `BodyArchetype`                         | stable `id`                                   | System reference-entity identity                                                                 |
+| `Measurement`                           | `value`, `unit`                               | Immutable value object                                                                           |
 
 ## Deferred decisions
 
