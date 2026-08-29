@@ -62,6 +62,28 @@ The initial API will use REST and JSON contracts. Request input is validated at 
 
 PostgreSQL queries and row-to-domain mapping belong in persistence adapters. Database migrations are explicit, reviewed SQL files, so schema changes remain visible and independently deployable. Tests describe observable behavior and cover the domain and application core without infrastructure, then verify HTTP and PostgreSQL adapters through their public contracts.
 
+## Local development
+
+GuitarS2 uses pnpm workspaces and Node.js 24 or newer. Enable pnpm through Corepack if it is not already available:
+
+```powershell
+corepack enable
+corepack pnpm install
+```
+
+The current API application is under `apps/api`. The root commands delegate to it:
+
+```powershell
+corepack pnpm dev          # start the API at http://127.0.0.1:3000
+corepack pnpm test         # run BDD-style tests
+corepack pnpm typecheck    # check TypeScript without emitting files
+corepack pnpm format       # check formatting
+corepack pnpm build        # compile the API
+corepack pnpm start        # run the compiled API
+```
+
+The API exposes `GET /health`, which returns `{"status":"ok"}` when it is available. Optional configuration uses `HOST` (default `127.0.0.1`), `PORT` (default `3000`), and `LOG_LEVEL` (default `info`). Configuration is validated before the server starts; `.env` files are intentionally ignored by Git.
+
 ## Monorepo direction
 
 All project code lives in this repository. It is intended to host multiple applications and shared packages as the project grows. Likely top-level areas include:

@@ -1,0 +1,18 @@
+{
+  "name": "guitars2",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "corepack pnpm --filter @guitars2/api build",
+    "dev": "corepack pnpm --filter @guitars2/api dev",
+    "format": "corepack pnpm --filter @guitars2/api format",
+    "format:write": "corepack pnpm --filter @guitars2/api format:write",
+    "start": "corepack pnpm --filter @guitars2/api start",
+    "test": "corepack pnpm --filter @guitars2/api test",
+    "typecheck": "corepack pnpm --filter @guitars2/api typecheck"
+  }
+}
