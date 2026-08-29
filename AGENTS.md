@@ -86,6 +86,12 @@ This file defines repository workflow for people and coding agents. Product inte
 - Agents may detect, summarize, and propose work autonomously. They must not create external changes, open pull requests, or modify issue state without explicit authorization until automated validation, security checks, and repository policies provide sufficient guardrails.
 - Prefer improving the deterministic feedback loop—tests, linting, type checks, security scanning, and policy checks—before expanding autonomous agent authority.
 
+### Issue closure policy
+
+- Until continuous integration exists, close an issue only after explicit human acceptance that its observable outcome and acceptance criteria are complete. A successful local command or commit is evidence, not acceptance by itself.
+- Once CI exists, a passing required pipeline is a prerequisite for closure, but closure remains explicit. Do not make `Closes #<number>` or equivalent GitHub auto-close syntax the default yet.
+- Future automated closure is limited to low-risk `agent-ready` work after the linked change reaches the default branch, all required CI and security checks pass, acceptance-criteria evidence is present, and no unresolved decision or blocker label remains.
+
 ### Issue-driven commands
 
 - `issues` and `list issues` list open repository issues with their number, title, labels, and a compact status summary. `list closed issues` and `list all issues` explicitly broaden that default view.
