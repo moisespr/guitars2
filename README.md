@@ -55,6 +55,7 @@ The exact guitar model is not fixed yet. For example, a neck model should be abl
 - TypeBox and JSON Schema for request/response contracts and runtime validation
 - OpenAPI generated from the API contracts
 - PostgreSQL
+- Docker Compose for reproducible local PostgreSQL development and testing
 - Kysely and `pg` for PostgreSQL access, isolated in persistence adapters
 - SQL migrations checked into the repository
 - Vitest for behavior-driven unit, API-contract, and integration tests
@@ -91,6 +92,37 @@ corepack pnpm start        # run the compiled API
 ```
 
 The API exposes `GET /health`, which returns `{"status":"ok"}` when it is available. Optional configuration uses `HOST` (default `127.0.0.1`), `PORT` (default `3000`), and `LOG_LEVEL` (default `info`). Configuration is validated before the server starts; `.env` files are intentionally ignored by Git.
+
+### Local PostgreSQL
+
+GuitarS2 uses Docker Compose and the official PostgreSQL image for local databases. It runs one persistent development database and a separate persistent integration-test database. Docker Desktop must be running before using the database commands.
+
+Create your uncommitted local configuration, choose a local-only password, and keep the password in the two URLs consistent with the Compose variables:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Start both databases, apply explicit SQL migrations to the development database, and run the PostgreSQL integration check:
+
+```powershell
+corepack pnpm db:up
+corepack pnpm db:migrate
+corepack pnpm test:postgres
+```
+
+The application validates `DATABASE_URL` before starting. `db:migrate` applies every checked-in SQL file in `apps/api/migrations` in version order and records its version and SHA-256 checksum in `schema_migrations`; a changed, already-applied migration fails rather than being silently reused. `test:postgres` migrates and tests only `TEST_DATABASE_URL`, so it cannot use the development database by accident.
+
+pgAdmin can connect to the development database at `127.0.0.1:${POSTGRES_PORT}` and to the test database at `127.0.0.1:${POSTGRES_TEST_PORT}` using the corresponding values in `.env`. By default those ports are `5432` and `5433`.
+
+Useful lifecycle commands:
+
+```powershell
+corepack pnpm db:logs  # follow both PostgreSQL logs
+corepack pnpm db:down  # stop containers and keep their local data volumes
+```
+
+Use `docker compose down --volumes` only when you deliberately want to remove both local database volumes and recreate them from scratch.
 
 ## Monorepo direction
 
@@ -130,4 +162,4 @@ These directories are a target structure, not a requirement to create empty scaf
 
 ## Status
 
-Project inception. The initial domain model and API contract are the next decisions to make.
+The catalog/model foundation, v1 API contract, and local PostgreSQL migration workflow are established. The next milestone is the first persisted catalog and guitar-model vertical slice.

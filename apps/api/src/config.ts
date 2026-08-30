@@ -1,5 +1,8 @@
 import { Type, type Static } from "typebox";
 import { Value } from "typebox/value";
+import { config as loadEnvironmentFile } from "dotenv";
+
+loadEnvironmentFile({ path: new URL("../../../.env", import.meta.url) });
 
 export const AppConfigSchema = Type.Object({
   host: Type.String({ minLength: 1 }),
@@ -15,6 +18,10 @@ export const AppConfigSchema = Type.Object({
 });
 
 export type AppConfig = Static<typeof AppConfigSchema>;
+
+export interface DatabaseConfig {
+  readonly databaseUrl: string;
+}
 
 export class ConfigurationError extends Error {
   public constructor(message: string) {
@@ -41,4 +48,29 @@ export function loadConfig(environment: NodeJS.ProcessEnv): AppConfig {
   }
 
   return config;
+}
+
+export function loadDatabaseConfig(
+  environment: NodeJS.ProcessEnv,
+  variableName = "DATABASE_URL",
+): DatabaseConfig {
+  const databaseUrl = environment[variableName];
+
+  if (databaseUrl === undefined || databaseUrl.trim().length === 0) {
+    throw new ConfigurationError(`${variableName} must be configured.`);
+  }
+
+  try {
+    const url = new URL(databaseUrl);
+
+    if (url.protocol !== "postgres:" && url.protocol !== "postgresql:") {
+      throw new Error("unsupported protocol");
+    }
+  } catch {
+    throw new ConfigurationError(
+      `${variableName} must be a valid PostgreSQL connection URL.`,
+    );
+  }
+
+  return { databaseUrl };
 }

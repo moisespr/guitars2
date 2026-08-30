@@ -8,11 +8,16 @@
   },
   "scripts": {
     "build": "corepack pnpm --filter @guitars2/api build",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs --follow postgres postgres-test",
+    "db:migrate": "corepack pnpm --filter @guitars2/api db:migrate",
+    "db:up": "docker compose up --detach postgres postgres-test",
     "dev": "corepack pnpm --filter @guitars2/api dev",
     "format": "corepack pnpm --filter @guitars2/api format",
     "format:write": "corepack pnpm --filter @guitars2/api format:write",
     "start": "corepack pnpm --filter @guitars2/api start",
     "test": "corepack pnpm --filter @guitars2/api test",
+    "test:postgres": "corepack pnpm --filter @guitars2/api test:postgres",
     "typecheck": "corepack pnpm --filter @guitars2/api typecheck"
   }
 }
