@@ -162,4 +162,4 @@ These directories are a target structure, not a requirement to create empty scaf
 
 ## Status
 
-The catalog/model foundation, v1 API contract, and local PostgreSQL migration workflow are established. The next milestone is the first persisted catalog and guitar-model vertical slice.
+The catalog/model foundation, v1 API contract, local PostgreSQL migration workflow, and first persisted catalog/guitar-model vertical slice are established. The next work can extend that foundation without broadening the agreed scope.

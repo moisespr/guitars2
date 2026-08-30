@@ -1,12 +1,15 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import { createHttpServer } from "../src/adapters/http/create-http-server.js";
+import { createHttpServer } from "../src/infrastructure/http/fastify-server.js";
 
-const server = createHttpServer({
-  host: "127.0.0.1",
-  port: 3000,
-  logLevel: "fatal",
-});
+const server = createHttpServer(
+  {
+    host: "127.0.0.1",
+    port: 3000,
+    logLevel: "fatal",
+  },
+  {} as never,
+);
 
 afterEach(async () => {
   await server.close();

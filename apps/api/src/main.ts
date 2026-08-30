@@ -1,9 +1,21 @@
+import { createApplication } from "./application/create-application.js";
+import { createHttpServer } from "./infrastructure/http/fastify-server.js";
+import { createPostgresStore } from "./infrastructure/postgres/postgres-catalog-and-model-store.js";
+import { systemClock } from "./infrastructure/system/system-clock.js";
+import { randomUuidGenerator } from "./infrastructure/system/random-uuid-generator.js";
 import { loadConfig, loadDatabaseConfig } from "./config.js";
-import { createHttpServer } from "./adapters/http/create-http-server.js";
 
 const config = loadConfig(process.env);
-loadDatabaseConfig(process.env);
-const server = createHttpServer(config);
+const { databaseUrl } = loadDatabaseConfig(process.env);
+const store = createPostgresStore(databaseUrl);
+const application = createApplication({
+  clock: systemClock,
+  ids: randomUuidGenerator,
+  store,
+});
+const server = createHttpServer(config, application);
+
+server.addHook("onClose", () => store.destroy());
 
 await server.listen({
   host: config.host,

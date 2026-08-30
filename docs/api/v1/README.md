@@ -119,7 +119,9 @@ If `bodyArchetypeId` is supplied, it must identify a system-curated `BodyArchety
 
 Every model has a stable generated UUID. A model name is unique only within its catalog and its model type. Therefore, a `GuitarModel` and a `BodyModel` called `Standard` may coexist in one catalog, but two `BodyModel` records called `Standard` may not.
 
-The API compares normalized names. The exact normalization algorithm is intentionally deferred, but the same server-defined algorithm must be used consistently for creation and conflict detection.
+The API compares normalized names. The server must use one documented algorithm consistently for creation and conflict detection.
+
+The initial implementation defines that algorithm as Unicode NFKC normalization, whitespace trimming, and `en-US` lowercase conversion. The supplied display name is preserved; the normalized form is an internal persistence value used exclusively for the catalog-and-model-type uniqueness constraint. Changing this rule is a future API and migration decision, not an incidental database collation change.
 
 ## Errors
 

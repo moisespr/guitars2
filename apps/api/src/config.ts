@@ -2,7 +2,10 @@ import { Type, type Static } from "typebox";
 import { Value } from "typebox/value";
 import { config as loadEnvironmentFile } from "dotenv";
 
-loadEnvironmentFile({ path: new URL("../../../.env", import.meta.url) });
+loadEnvironmentFile({
+  path: new URL("../../../.env", import.meta.url),
+  quiet: true,
+});
 
 export const AppConfigSchema = Type.Object({
   host: Type.String({ minLength: 1 }),

@@ -32,12 +32,12 @@ This file defines repository workflow for people and coding agents. Product inte
 
 ## Ports and adapters
 
-- Organize code so the domain and application use cases depend on abstractions, while HTTP, PostgreSQL, queues, clocks, IDs, and other integrations implement those abstractions at the edge.
-- Define ports in the application/domain-owned code for capabilities the use case needs, such as repositories, transactions, clocks, or ID generation. Adapters must not determine the shape of core business logic.
+- Treat ports and adapters as dependency-direction concepts, not mandatory package or folder names. Keep the domain and application independent of HTTP, PostgreSQL, queues, clocks, IDs, and other integrations.
+- Declare the capability a use case needs as a semantic application type or function, colocated with that use case or shared application concern. Avoid a generic `ports/` package and do not let infrastructure determine the shape of core business logic.
 - Keep HTTP routes/controllers thin: translate requests to commands or queries, invoke a use case, and map known outcomes to response contracts.
-- Keep persistence adapters responsible for mapping between domain objects and database records. Do not let ORM models or SQL row shapes leak across the port boundary.
+- Place technical implementations under `infrastructure/`, organized by the technology or boundary they implement. Keep persistence mapping there, and never let ORM models or SQL row shapes leak into application or domain code.
 - Make transactions explicit at the application boundary when a use case requires atomic changes across repositories. Do not place transaction orchestration in route handlers.
-- Prefer composition at application startup: wire concrete adapters to ports there, keeping the core independently testable.
+- Prefer composition at application startup: wire infrastructure implementations to application capabilities there, keeping the core independently testable.
 
 ## Test-driven development and testing
 
@@ -52,7 +52,9 @@ This file defines repository workflow for people and coding agents. Product inte
 ## Clean Code and module design
 
 - Give modules one clear responsibility and use names that reflect the guitar domain and the operation performed. Prefer small, cohesive functions over broad utility modules.
-- Keep dependencies pointing inward: adapters may depend on application and domain code; application code may depend on domain code and ports; domain code must not depend on adapters or frameworks.
+- Organize TypeScript by cohesive domain concept, use case, application concern, or infrastructure technology (for example, `domain/guitar-model/`, `application/clock.ts`, or `infrastructure/postgres/`). Do not accumulate unrelated entities in catch-all modules such as `models.ts` or `ports.ts`.
+- A module may contain closely related types, rules, and errors; do not apply a mechanical one-class-per-file rule. Split it when the concepts have different reasons to change or would be clearer to navigate independently.
+- Keep dependencies pointing inward: infrastructure may depend on application and domain code; application code may depend on domain code and its declared capabilities; domain code must not depend on infrastructure or frameworks.
 - Prefer explicit types and domain value objects over primitive-heavy parameter lists or vague boolean flags. Represent units with the value they qualify.
 - Make invalid states difficult to construct. Use constructors, factories, or parsers where they clarify and enforce an invariant; return structured, expected failures rather than throwing for ordinary invalid input.
 - Avoid speculative abstraction, generic repositories, hidden global state, and comments that repeat code. Write comments for non-obvious decisions, constraints, and trade-offs.
