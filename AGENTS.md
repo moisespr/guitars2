@@ -89,14 +89,21 @@ This file defines repository workflow for people and coding agents. Product inte
 - State the context, observable behavior or outcome, acceptance criteria, constraints, and required validation evidence in every implementation issue.
 - Classify issues with one `type:` label (`feature`, `bug`, `chore`, or `decision`) and applicable `area:` labels (`domain`, `api`, `database`, or `platform`).
 - Apply `agent-ready` only when the scope is bounded, relevant product decisions are resolved, acceptance criteria are explicit, and deterministic verification commands are known.
-- Link commits and pull requests to their issue. Keep issue discussions as the record of material scope or decision changes.
+- Use trunk-based development: pair-review changes locally, run relevant checks, then commit and push directly to `main`. Pull requests are not part of the regular workflow.
+- Link commits to their issue. Keep issue discussions as the record of material scope or decision changes.
 - Agents may detect, summarize, and propose work autonomously. They must not create external changes, open pull requests, or modify issue state without explicit authorization until automated validation, security checks, and repository policies provide sufficient guardrails.
 - Prefer improving the deterministic feedback loop—tests, linting, type checks, security scanning, and policy checks—before expanding autonomous agent authority.
 
+### Mainline quality policy
+
+- GitHub Actions is the authoritative quality gate. The `Quality` workflow runs on pushes to `main` and on explicit manual dispatch; it does not run on pull requests.
+- Before pushing, run the relevant local checks. After every push, inspect the resulting `Quality` run. Treat a failed mainline run as an urgent condition: make a focused corrective commit or revert the failing change.
+- The CI PostgreSQL service is disposable and contains only non-secret test data. Keep integration tests pointed to `TEST_DATABASE_URL`, never to a persistent or production database.
+- Keep GitHub dependency-graph and Dependabot alerts enabled in repository settings. Do not configure automated dependency-update pull requests; review dependency changes through the paired mainline workflow.
+
 ### Issue closure policy
 
-- Until continuous integration exists, close an issue only after explicit human acceptance that its observable outcome and acceptance criteria are complete. A successful local command or commit is evidence, not acceptance by itself.
-- Once CI exists, a passing required pipeline is a prerequisite for closure, but closure remains explicit. Do not make `Closes #<number>` or equivalent GitHub auto-close syntax the default yet.
+- A passing `Quality` run for the pushed mainline commit is a prerequisite for closure, but closure remains explicit. Do not make `Closes #<number>` or equivalent GitHub auto-close syntax the default yet.
 - Future automated closure is limited to low-risk `agent-ready` work after the linked change reaches the default branch, all required CI and security checks pass, acceptance-criteria evidence is present, and no unresolved decision or blocker label remains.
 
 ### Issue-driven commands

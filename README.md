@@ -124,6 +124,14 @@ corepack pnpm db:down  # stop containers and keep their local data volumes
 
 Use `docker compose down --volumes` only when you deliberately want to remove both local database volumes and recreate them from scratch.
 
+### Continuous integration
+
+GitHub Actions validates every push to `main` and can be run manually from the Actions tab. It installs the locked dependencies and runs formatting, TypeScript, BDD-style tests, the production build, PostgreSQL migration and integration tests, and a production-dependency vulnerability audit. The PostgreSQL check uses an isolated ephemeral service database rather than a shared environment.
+
+GuitarS2 uses trunk-based development: contributors pair-review a change locally, run the relevant commands, then commit and push it directly to `main`. Pull requests are intentionally not part of the regular workflow. A failed mainline quality run must be corrected or reverted promptly.
+
+GitHub's dependency graph and Dependabot alerts should remain enabled in repository settings. Automated Dependabot update pull requests are intentionally not configured; dependency changes are reviewed and applied through the same paired mainline workflow.
+
 ## Monorepo direction
 
 All project code lives in this repository. It is intended to host multiple applications and shared packages as the project grows. Likely top-level areas include:
@@ -162,4 +170,4 @@ These directories are a target structure, not a requirement to create empty scaf
 
 ## Status
 
-The catalog/model foundation, v1 API contract, local PostgreSQL migration workflow, and first persisted catalog/guitar-model vertical slice are established. The next work can extend that foundation without broadening the agreed scope.
+The catalog/model foundation, v1 API contract, local PostgreSQL migration workflow, first persisted catalog/guitar-model vertical slice, and mainline CI quality gate are established. The next work can extend that foundation without broadening the agreed scope.

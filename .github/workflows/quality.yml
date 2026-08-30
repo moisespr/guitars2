@@ -1,0 +1,64 @@
+name: Quality
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: API quality and PostgreSQL integration
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:18.6-alpine3.24
+        env:
+          POSTGRES_USER: guitars2_ci
+          POSTGRES_PASSWORD: guitars2_ci_password
+          POSTGRES_DB: guitars2_ci
+        options: >-
+          --health-cmd "pg_isready -U guitars2_ci -d guitars2_ci"
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 15
+        ports:
+          - 5432:5432
+    env:
+      TEST_DATABASE_URL: postgresql://guitars2_ci:guitars2_ci_password@127.0.0.1:5432/guitars2_ci
+
+    steps:
+      - name: Check out the mainline revision
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Enable pnpm through Corepack
+        run: corepack enable
+
+      - name: Install locked dependencies
+        run: corepack pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: corepack pnpm format
+
+      - name: Check TypeScript
+        run: corepack pnpm typecheck
+
+      - name: Run BDD-style tests
+        run: corepack pnpm test
+
+      - name: Build the API
+        run: corepack pnpm build
+
+      - name: Run PostgreSQL integration tests
+        run: corepack pnpm test:postgres
+
+      - name: Audit production dependencies
+        run: corepack pnpm audit --prod --audit-level=high
