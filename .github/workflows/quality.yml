@@ -5,6 +5,12 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      verify_failure_reporting:
+        description: Intentionally fail this manual run to verify failure reporting
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -62,3 +68,9 @@ jobs:
 
       - name: Audit production dependencies
         run: corepack pnpm audit --prod --audit-level=high
+
+      - name: Verify failure reporting
+        if: ${{ inputs.verify_failure_reporting }}
+        run: |
+          echo "This manually dispatched run intentionally fails to verify reporting."
+          exit 1
